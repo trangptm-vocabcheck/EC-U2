@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Hệ Thống Làm Bài Trắc Nghiệm - English Punctuation</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f1f5f9;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+
+    /* Header */
+    .app-header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      color: #ffffff;
+      padding: 28px 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      margin-bottom: 24px;
+    }
+
+    .app-header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .app-header p {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* Sticky Progress Bar */
+    .sticky-progress {
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .progress-info {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .progress-bar-wrap {
+      flex: 1;
+      height: 10px;
+      background-color: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background-color: var(--primary);
+      transition: width 0.25s ease;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f1f5f9;
+      color: #1e293b;
+    }
+
+    /* Student Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .form-grid {
+        grid-template-columns: 1fr 1.4fr 1fr;
+      }
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .form-group label span {
+      color: var(--danger);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 11px 14px;
+      font-size: 16px; /* 16px chống tự động zoom trên iOS */
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background-color: #fff;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Section Header */
+    .part-banner {
+      background-color: #eff6ff;
+      border-left: 5px solid var(--primary);
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin: 28px 0 16px 0;
+      font-weight: 700;
+      color: #1e3a8a;
+      font-size: 1.05rem;
+    }
+
+    /* Question Item */
+    .question-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .question-card.unanswered-error {
+      border-color: var(--danger);
+      background-color: #fef2f2;
+    }
+
+    .question-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: var(--text-main);
+    }
+
+    .question-number {
+      display: inline-block;
+      background-color: #e0e7ff;
+      color: #1d4ed8;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 6px;
+      margin-right: 8px;
+      font-size: 0.9rem;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-size: 0.96rem;
+      background-color: #fafafa;
+      user-select: none;
+    }
+
+    .option-label:hover {
+      background-color: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    .option-label input[type="radio"] {
+      margin-top: 4px;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .option-label.selected {
+      border-color: var(--primary);
+      background-color: #eff6ff;
+      font-weight: 500;
+    }
+
+    /* Submit Button */
+    .submit-section {
+      margin-top: 28px;
+      text-align: center;
+    }
+
+    .btn-submit {
+      background-color: var(--primary);
+      color: #ffffff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 15px 36px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-submit:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .btn-submit:disabled {
+      background-color: #94a3b8;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Closed Gate & Result Screens */
+    .state-box {
+      text-align: center;
+      padding: 48px 24px;
+    }
+
+    .state-icon {
+      font-size: 3.2rem;
+      margin-bottom: 16px;
+    }
+
+    .state-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+
+    .state-desc {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .score-display {
+      margin: 24px auto;
+      padding: 24px;
+      background: #f0fdf4;
+      border: 2px solid #bbf7d0;
+      border-radius: var(--radius);
+      max-width: 420px;
+    }
+
+    .score-big {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--success);
+      line-height: 1.2;
+    }
+
+    .score-sub {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #166534;
+      margin-top: 6px;
+    }
+
+    .student-summary {
+      margin-top: 18px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      background: #f8fafc;
+      padding: 14px;
+      border-radius: 8px;
+      display: inline-block;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="app-header">
+    <h1>BÀI TẬP TRẮC NGHIỆM: ENGLISH PUNCTUATION</h1>
+    <p>Hệ thống làm bài và chấm điểm tự động (40 câu hỏi)</p>
+  </header>
+
+  <main class="container">
+    <!-- MÀN HÌNH KHI ĐÓNG CỔNG BÀI THI -->
+    <div id="closed-container" class="card state-box hidden">
+      <div class="state-icon">🔒</div>
+      <div class="state-title">Cổng Làm Bài Đang Đóng</div>
+      <p class="state-desc">Thời gian làm bài thi / luyện tập đã kết thúc hoặc chưa mở.</p>
+    </div>
+
+    <!-- MÀN HÌNH LÀM BÀI CHÍNH -->
+    <div id="exam-container" class="hidden">
+      <!-- Thanh tiến độ -->
+      <div class="sticky-progress">
+        <div class="progress-info">Đã làm: <span id="answered-count">0</span> / 40 câu</div>
+        <div class="progress-bar-wrap">
+          <div id="progress-bar" class="progress-bar-fill"></div>
+        </div>
+      </div>
+
+      <!-- Khối thông tin người học -->
+      <div class="card">
+        <div class="card-title">THÔNG TIN NGƯỜI HỌC</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="className">Lớp học / Mã lớp <span>*</span></label>
+            <input type="text" id="className" class="form-control" placeholder="VD: K22-Anh01" required>
+          </div>
+          <div class="form-group">
+            <label for="fullName">Họ và tên người học <span>*</span></label>
+            <input type="text" id="fullName" class="form-control" placeholder="Nhập đầy đủ họ và tên" required>
+          </div>
+          <div class="form-group">
+            <label for="studentId">Mã sinh viên / Học viên <span>*</span></label>
+            <input type="text" id="studentId" class="form-control" placeholder="VD: 22123456" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Danh sách câu hỏi được render bằng JS -->
+      <div id="questions-wrapper"></div>
+
+      <!-- Nút nộp bài -->
+      <div class="submit-section">
+        <button type="button" id="submit-btn" class="btn-submit" onclick="handleSubmitExam()">NỘP BÀI</button>
+      </div>
+    </div>
+
+    <!-- MÀN HÌNH KẾT QUẢ SAU KHI NỘP BÀI (CHỈ HIỆN ĐIỂM, KHÔNG HIỆN ĐÁP ÁN) -->
+    <div id="result-container" class="card state-box hidden">
+      <div class="state-icon">✅</div>
+      <div class="state-title">Nộp Bài Thành Công!</div>
+      <p class="state-desc">Kết quả bài làm của bạn đã được hệ thống ghi nhận vào bảng điểm.</p>
+      
+      <div class="score-display">
+        <div class="score-big" id="res-score10">0.0 / 10</div>
+        <div class="score-sub" id="res-correct">Số câu đúng: 0 / 40</div>
+      </div>
+
+      <div class="student-summary" id="res-student-info"></div>
+    </div>
+  </main>
+
+  <script>
+    /*************************************************************************
+     * CẤU HÌNH HỆ THỐNG
+     *************************************************************************/
+    // Công tắc Đóng/Mở cổng bài thi: true = Mở cổng, false = Đóng cổng
+    const IS_EXAM_OPEN = true;
+
+    // Đường dẫn Web App Google Apps Script nhận dữ liệu
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2Q6dKxML_hI7zNV8i0pojPfPaLlnrhLWZ2ovgrEmchA_qYuaEVGYggGuNu1CRQUVsKQ/exec";
+
+    /*************************************************************************
+     * DỮ LIỆU 40 CÂU HỎI TRẮC NGHIỆM (DATASET)
+     *************************************************************************/
+    const QUIZ_DATA = [
+      // PART 1: COMMAS (Rules 1 – 18)
+      {
+        id: 1,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "Which sentence correctly uses the Oxford comma to prevent ambiguity in a list?",
+        options: {
+          A: "They had coffee, cheese and crackers, and grapes.",
+          B: "They had coffee, cheese, and crackers and grapes.",
+          C: "They had coffee cheese and crackers and grapes.",
+          D: "They had coffee, cheese and crackers and, grapes."
+        },
+        answer: "A",
+        explanation: "Placing a comma after \"crackers\" clarifies that \"cheese and crackers\" is a single combined item in the series."
+      },
+      {
+        id: 2,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "Which sentence demonstrates the correct use of a comma between interchangeable adjectives?",
+        options: {
+          A: "She wore a soft comfortable, sweater.",
+          B: "She wore a soft, comfortable sweater.",
+          C: "She wore a, soft comfortable sweater.",
+          D: "She wore a soft comfortable sweater,"
+        },
+        answer: "B",
+        explanation: "Use a comma between two adjectives when their order can be reversed or linked with \"and\"."
+      },
+      {
+        id: 3,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "What grammatical error is committed in: \"The sun was shining brightly, I decided to go for a walk.\"?",
+        options: {
+          A: "Sentence fragment",
+          B: "Comma splice",
+          C: "Dangling modifier",
+          D: "Lacking parallelism"
+        },
+        answer: "B",
+        explanation: "Joining two independent clauses with only a comma creates a comma splice error."
+      },
+      {
+        id: 4,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "How should two independent clauses connected by a coordinating conjunction (and, but, or, so...) be punctuated?",
+        options: {
+          A: "Place a comma after the coordinating conjunction.",
+          B: "Place a comma before the coordinating conjunction.",
+          C: "Do not use any comma.",
+          D: "Place a semicolon after the conjunction."
+        },
+        answer: "B",
+        explanation: "Place a comma immediately before the coordinating conjunction joining two independent clauses."
+      },
+      {
+        id: 5,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "Which sentence is correctly punctuated when the subject is NOT repeated before the second verb?",
+        options: {
+          A: "He was quick, but did not manage to get there on time.",
+          B: "He was quick but, did not manage to get there on time.",
+          C: "He was quick but did not manage to get there on time.",
+          D: "He was quick, but, did not manage to get there on time."
+        },
+        answer: "C",
+        explanation: "If the subject is not repeated before the second verb, a comma is generally not used before \"but\"."
+      },
+      {
+        id: 6,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "Which sentence correctly uses a comma after an introductory word?",
+        options: {
+          A: "Hey you are blocking my view.",
+          B: "Hey, you are blocking my view.",
+          C: "Hey you, are blocking my view.",
+          D: "Hey you are, blocking my view."
+        },
+        answer: "B",
+        explanation: "Introductory words like well, yes, hey, hello should be followed by a comma."
+      },
+      {
+        id: 7,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "Which sentence correctly punctuates an interrupting word/phrase like however in the middle of a sentence?",
+        options: {
+          A: "Sheila however did not agree with the boy’s opinion.",
+          B: "Sheila, however, did not agree with the boy’s opinion.",
+          C: "Sheila, however did not agree with the boy’s opinion.",
+          D: "Sheila however, did not agree with the boy’s opinion."
+        },
+        answer: "B",
+        explanation: "Use a pair of commas to enclose interrupting phrases that break the sentence flow."
+      },
+      {
+        id: 8,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "How should direct address be punctuated in: \"Will you Monica help me find the book?\"?",
+        options: {
+          A: "Will you Monica, help me find the book?",
+          B: "Will you, Monica, help me find the book?",
+          C: "Will you, Monica help me find the book?",
+          D: "Will you Monica help me, find the book?"
+        },
+        answer: "B",
+        explanation: "Names or nouns of direct address must be set off with commas."
+      },
+      {
+        id: 9,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "Which sentence correctly punctuates a complete date within a sentence?",
+        options: {
+          A: "It was in the Sun’s March 7 2020 edition.",
+          B: "It was in the Sun’s March 7, 2020, edition.",
+          C: "It was in the Sun’s March 7, 2020 edition.",
+          D: "It was in the Sun’s March, 7, 2020 edition."
+        },
+        answer: "B",
+        explanation: "Place a comma between the day and year, and another comma after the year when the date continues in the sentence."
+      },
+      {
+        id: 10,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "Which sentence correctly punctuates a location consisting of a city and state?",
+        options: {
+          A: "I’m from the Akron, Ohio area.",
+          B: "I’m from the Akron Ohio, area.",
+          C: "I’m from the Akron, Ohio, area.",
+          D: "I’m from the Akron Ohio area."
+        },
+        answer: "C",
+        explanation: "Use commas to separate the city from the state, and place a comma after the state if the sentence continues."
+      },
+      {
+        id: 11,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "Which punctuation style for Jr. within a sentence is INCORRECT?",
+        options: {
+          A: "John Williams Jr. was an accomplished musician.",
+          B: "John Williams, Jr., was an accomplished musician.",
+          C: "John Williams, Jr. was an accomplished musician.",
+          D: "Both A and B are correct."
+        },
+        answer: "C",
+        explanation: "If a comma is used before Jr., a trailing comma after Jr. is mandatory."
+      },
+      {
+        id: 12,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "Which sentence correctly uses commas with professional degrees/titles?",
+        options: {
+          A: "Mary Smith M.D. will be speaking at the conference.",
+          B: "Mary Smith, M.D., will be speaking at the conference.",
+          C: "Mary Smith, M.D. will be speaking at the conference.",
+          D: "Mary Smith M.D., will be speaking at the conference."
+        },
+        answer: "B",
+        explanation: "Enclose academic or professional titles (e.g., M.D., Ph.D.) with commas when they follow a person's name."
+      },
+      {
+        id: 13,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "When starting a sentence with a dependent clause, where should the comma be placed?",
+        options: {
+          A: "After the independent clause.",
+          B: "Directly after the dependent clause.",
+          C: "No comma is needed anywhere.",
+          D: "Before the subordinating conjunction."
+        },
+        answer: "B",
+        explanation: "Use a comma after an introductory dependent clause before the main independent clause starts."
+      },
+      {
+        id: 14,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "Which sentence correctly uses commas for nonessential relative clauses?",
+        options: {
+          A: "The book which I borrowed from him was fascinating.",
+          B: "The book, which I borrowed from him, was fascinating.",
+          C: "The book, which I borrowed from him was fascinating.",
+          D: "The book which I borrowed from him, was fascinating."
+        },
+        answer: "B",
+        explanation: "Nonessential relative clauses (adding extra, nonessential information) must be set off with commas."
+      },
+      {
+        id: 15,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "Which sentence contains a correctly punctuated appositive phrase?",
+        options: {
+          A: "My friend, Sarah is an excellent cook.",
+          B: "My friend, Sarah, is an excellent cook.",
+          C: "My friend Sarah, is an excellent cook.",
+          D: "My friend Sarah is, an excellent cook."
+        },
+        answer: "B",
+        explanation: "The closing appositive comma is required to properly enclose nonessential appositive elements."
+      },
+      {
+        id: 16,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "Which sentence correctly sets off a nonessential description for a clearly identified proper noun?",
+        options: {
+          A: "Lisa an avid hiker completed the trail in record time.",
+          B: "Lisa, an avid hiker, completed the trail in record time.",
+          C: "Lisa, an avid hiker completed the trail in record time.",
+          D: "Lisa an avid hiker, completed the trail in record time."
+        },
+        answer: "B",
+        explanation: "Because \"Lisa\" is already uniquely identified, the descriptive appositive phrase is nonessential and requires surrounding commas."
+      },
+      {
+        id: 17,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "Which punctuation correctly interrupts a direct quotation?",
+        options: {
+          A: "“Really” she exclaimed “that's incredible!”",
+          B: "“Really,” she exclaimed, “that's incredible!”",
+          C: "“Really”, she exclaimed, “that's incredible!”",
+          D: "“Really,” she exclaimed “that's incredible!”"
+        },
+        answer: "B",
+        explanation: "Use commas to set off the attribution tag (she exclaimed) when interrupting a quote."
+      },
+      {
+        id: 18,
+        part: "PART 1: COMMAS (Rules 1 – 18)",
+        q: "Which sentence demonstrates correct comma usage for contrasting elements?",
+        options: {
+          A: "This car is blue not red.",
+          B: "This car is blue, not red.",
+          C: "This car, is blue not red.",
+          D: "This car is, blue not, red."
+        },
+        answer: "B",
+        explanation: "Use a comma to separate distinct contrasting parts of a sentence."
+      },
+
+      // PART 2: SEMICOLONS (Rules 19 – 24)
+      {
+        id: 19,
+        part: "PART 2: SEMICOLONS (Rules 19 – 24)",
+        q: "What is the primary function of a semicolon between two independent clauses?",
+        options: {
+          A: "To introduce a detailed list.",
+          B: "To link closely related independent clauses without a coordinating conjunction.",
+          C: "To enclose parenthetical thoughts.",
+          D: "To separate verbs from their direct objects."
+        },
+        answer: "B",
+        explanation: "A semicolon replaces a period to bring two closely related independent thoughts together."
+      },
+      {
+        id: 20,
+        part: "PART 2: SEMICOLONS (Rules 19 – 24)",
+        q: "Which sentence correctly uses a semicolon before a transitional adverb introducing a complete sentence?",
+        options: {
+          A: "We can provide any two books, nevertheless, science-fiction books are limited.",
+          B: "We can provide any two books; nevertheless, science-fiction books are in limited supply.",
+          C: "We can provide any two books nevertheless; science-fiction books are limited.",
+          D: "We can provide any two books: nevertheless science-fiction books are limited."
+        },
+        answer: "B",
+        explanation: "Place a semicolon before transitional adverbs (nevertheless, however, therefore) and a comma immediately after."
+      },
+      {
+        id: 21,
+        part: "PART 2: SEMICOLONS (Rules 19 – 24)",
+        q: "Which sentence correctly uses semicolons to separate complex items in a series containing internal commas?",
+        options: {
+          A: "Attendees hail from Hanoi, Vietnam, Sydney, Australia, New York, USA, and other locations.",
+          B: "Attendees hail from Hanoi, Vietnam; Sydney, Australia; New York, USA; and other locations.",
+          C: "Attendees hail from Hanoi, Vietnam: Sydney, Australia: New York, USA: and other locations.",
+          D: "Attendees hail from Hanoi; Vietnam, Sydney; Australia, New York; USA."
+        },
+        answer: "B",
+        explanation: "Semicolons prevent confusion when listing units that already contain internal commas."
+      },
+      {
+        id: 22,
+        part: "PART 2: SEMICOLONS (Rules 19 – 24)",
+        q: "When can a semicolon link clauses joined by a coordinating conjunction (and, but)?",
+        options: {
+          A: "Whenever the sentence contains more than 10 words.",
+          B: "When the independent clauses already contain internal commas.",
+          C: "Only at the conclusion of a paragraph.",
+          D: "Semicolons can never be used before coordinating conjunctions."
+        },
+        answer: "B",
+        explanation: "A semicolon may precede a coordinating conjunction if the clauses contain multiple internal commas."
+      },
+      {
+        id: 23,
+        part: "PART 2: SEMICOLONS (Rules 19 – 24)",
+        q: "True or False: Semicolons and colons are interchangeable and perform identical grammatical functions.",
+        options: {
+          A: "True",
+          B: "False"
+        },
+        answer: "B",
+        explanation: "Semicolons connect independent thoughts; colons introduce explanations, lists, or elaborations."
+      },
+      {
+        id: 24,
+        part: "PART 2: SEMICOLONS (Rules 19 – 24)",
+        q: "Which sentence contains an INCORRECT semicolon usage?",
+        options: {
+          A: "They completed the project; now they await feedback.",
+          B: "She likes tea; however, he prefers coffee.",
+          C: "Because she studied hard; she passed the exam easily.",
+          D: "I need items from Paris, France; Rome, Italy; and London, UK."
+        },
+        answer: "C",
+        explanation: "Sentence C uses a semicolon after a dependent clause (Because she studied hard), which is incorrect; a comma should be used instead."
+      },
+
+      // PART 3: COLONS (Rules 25 – 30)
+      {
+        id: 25,
+        part: "PART 3: COLONS (Rules 25 – 30)",
+        q: "What concept does a colon convey when introducing information?",
+        options: {
+          A: "\"In other words\" or \"This is what I mean\"",
+          B: "\"On the contrary\"",
+          C: "\"In conclusion\"",
+          D: "\"For instance, unexpectedly\""
+        },
+        answer: "A",
+        explanation: "A colon signals that the following information explains or expands upon the preceding statement."
+      },
+      {
+        id: 26,
+        part: "PART 3: COLONS (Rules 25 – 30)",
+        q: "Which sentence INCORRECTLY places a colon before a list?",
+        options: {
+          A: "You need various essentials: tents, supplies, and extra blankets.",
+          B: "I desire: cheese, crackers, and grapes.",
+          C: "I desire the following: cheese, crackers, and grapes.",
+          D: "Requested items include the following: jackets and boots."
+        },
+        answer: "B",
+        explanation: "Never place a colon directly after a verb (desire) or preposition. The sentence preceding the colon must be an independent clause."
+      },
+      {
+        id: 27,
+        part: "PART 3: COLONS (Rules 25 – 30)",
+        q: "Can a colon be used between two independent clauses?",
+        options: {
+          A: "No, only semicolons are permitted between independent clauses.",
+          B: "Yes, when the second clause directly explains, illustrates, or expands on the first.",
+          C: "Yes, but only if the second clause begins with a proper noun.",
+          D: "No, colons are strictly reserved for bullet points."
+        },
+        answer: "B",
+        explanation: "A colon can connect independent clauses when the second clause explicitly clarifies or elaborates the first."
+      },
+      {
+        id: 28,
+        part: "PART 3: COLONS (Rules 25 – 30)",
+        q: "What punctuation mark follows a salutation in a formal business letter?",
+        options: {
+          A: "Comma (,)",
+          B: "Semicolon (;)",
+          C: "Colon (:)",
+          D: "Dash (--)"
+        },
+        answer: "C",
+        explanation: "Formal business correspondence requires a colon after the salutation (e.g., Dear Mr. Johnson:)."
+      },
+      {
+        id: 29,
+        part: "PART 3: COLONS (Rules 25 – 30)",
+        q: "What punctuation mark is standard for introducing a long, formal direct quotation?",
+        options: {
+          A: "Comma",
+          B: "Colon",
+          C: "Semicolon",
+          D: "Hyphen"
+        },
+        answer: "B",
+        explanation: "A colon is used to introduce formal or multi-sentence direct quotations."
+      },
+      {
+        id: 30,
+        part: "PART 3: COLONS (Rules 25 – 30)",
+        q: "When presenting bullet points after a colon, when MUST you capitalize and end each item with a period?",
+        options: {
+          A: "Always, regardless of sentence structure.",
+          B: "When each bullet item forms a complete sentence.",
+          C: "Never, bullet points must remain uncapitalized.",
+          D: "Only when bullet points use numerical labels."
+        },
+        answer: "B",
+        explanation: "If each listed bullet point is an independent sentence, capitalize the first letter and place a period at the end."
+      },
+
+      // PART 4: QUOTATION MARKS (Rules 31 – 35)
+      {
+        id: 31,
+        part: "PART 4: QUOTATION MARKS (Rules 31 – 35)",
+        q: "What is the primary function of double quotation marks?",
+        options: {
+          A: "To highlight technical jargon.",
+          B: "To enclose exact, word-for-word direct speech or quoted text.",
+          C: "To emphasize important adjectives.",
+          D: "To indicate parenthetical remarks."
+        },
+        answer: "B",
+        explanation: "Double quotation marks surround direct, verbatim spoken or written words."
+      },
+      {
+        id: 32,
+        part: "PART 4: QUOTATION MARKS (Rules 31 – 35)",
+        q: "According to standard American punctuation rules, where should periods and commas ALWAYS be placed relative to quotation marks?",
+        options: {
+          A: "Outside quotation marks.",
+          B: "Inside quotation marks.",
+          C: "Placement depends on sentence length.",
+          D: "Periods inside, commas outside."
+        },
+        answer: "B",
+        explanation: "Periods and commas are consistently placed inside closing quotation marks."
+      },
+      {
+        id: 33,
+        part: "PART 4: QUOTATION MARKS (Rules 31 – 35)",
+        q: "Which punctuation mark is used for a quotation nested inside another quotation?",
+        options: {
+          A: "Double quotation marks (“ ”)",
+          B: "Single quotation marks (‘ ’)",
+          C: "Parentheses ( )",
+          D: "Square brackets [ ]"
+        },
+        answer: "B",
+        explanation: "Single quotation marks (‘ ’) are reserved for nested quotes within an existing quotation."
+      },
+      {
+        id: 34,
+        part: "PART 4: QUOTATION MARKS (Rules 31 – 35)",
+        q: "Which sentence correctly places punctuation for a nested quotation?",
+        options: {
+          A: "She recounted, “He insisted, ‘I’ll be there.’”",
+          B: "She recounted, “He insisted, ‘I’ll be there’.”",
+          C: "She recounted, “He insisted, ‘I’ll be there’”.",
+          D: "She recounted, “He insisted, ‘I’ll be there’”."
+        },
+        answer: "A",
+        explanation: "The period remains inside both the single and double closing quotation marks."
+      },
+      {
+        id: 35,
+        part: "PART 4: QUOTATION MARKS (Rules 31 – 35)",
+        q: "When a direct quotation spans across multiple paragraphs, how are quotation marks applied?",
+        options: {
+          A: "Open and close every single paragraph with quotation marks.",
+          B: "Place opening quotes at the beginning of each paragraph, but place closing quotes ONLY at the end of the final paragraph.",
+          C: "Place quotation marks only at the start of the first paragraph and end of the last paragraph.",
+          D: "Omit quotation marks and use italics instead."
+        },
+        answer: "B",
+        explanation: "For multi-paragraph quotes, start every paragraph with an opening quotation mark, but omit closing quotes until the final paragraph concludes."
+      },
+
+      // PART 5: PARENTHESES & BRACKETS (Rules 36 – 40)
+      {
+        id: 36,
+        part: "PART 5: PARENTHESES & BRACKETS (Rules 36 – 40)",
+        q: "Where should the sentence period be placed when parenthetical information finishes a sentence?",
+        options: {
+          A: "Inside the closing parenthesis.",
+          B: "Outside the closing parenthesis.",
+          C: "Omitted entirely.",
+          D: "Before the opening parenthesis."
+        },
+        answer: "B",
+        explanation: "When parenthetical material ends a larger sentence, the terminal period belongs outside the closing parenthesis."
+      },
+      {
+        id: 37,
+        part: "PART 5: PARENTHESES & BRACKETS (Rules 36 – 40)",
+        q: "When does a period go INSIDE closing parentheses?",
+        options: {
+          A: "When the parenthetical phrase contains a proper noun.",
+          B: "When an entire independent sentence is contained inside the parentheses.",
+          C: "Always, without exception.",
+          D: "Never."
+        },
+        answer: "B",
+        explanation: "Place the period inside parentheses only if the enclosed text stands as a complete, standalone sentence."
+      },
+      {
+        id: 38,
+        part: "PART 5: PARENTHESES & BRACKETS (Rules 36 – 40)",
+        q: "Do parenthetical phrases affect Subject-Verb Agreement (e.g., \"Emily (along with her cat) was/were eager...\")?",
+        options: {
+          A: "Yes, they pluralize the subject.",
+          B: "No, parenthetical content is grammatically independent from the main subject.",
+          C: "Yes, the verb must always become plural.",
+          D: "It depends on verb tense."
+        },
+        answer: "B",
+        explanation: "Parenthetical phrases do not alter the main subject; the verb agrees strictly with the singular subject \"Emily\" (was)."
+      },
+      {
+        id: 39,
+        part: "PART 5: PARENTHESES & BRACKETS (Rules 36 – 40)",
+        q: "What is the purpose of inserting [sic] in square brackets within a direct quote?",
+        options: {
+          A: "To indicate omitted text.",
+          B: "To signal that an error in spelling or grammar occurred in the original source material.",
+          C: "To provide a translation.",
+          D: "To add visual emphasis."
+        },
+        answer: "B",
+        explanation: "[sic] clarifies that an error belongs to the original source and was not made by the person quoting it."
+      },
+      {
+        id: 40,
+        part: "PART 5: PARENTHESES & BRACKETS (Rules 36 – 40)",
+        q: "What punctuation mark inside square brackets indicates that words were omitted from a direct quotation?",
+        options: {
+          A: "Question mark [?]",
+          B: "Ellipses [...]",
+          C: "Exclamation mark [!]",
+          D: "Hyphen [-]"
+        },
+        answer: "B",
+        explanation: "Bracketed ellipses [...] signify that words from the original quotation were omitted."
+      }
+    ];
+
+    /*************************************************************************
+     * KHỞI TẠO GIAO DIỆN & RENDER CÂU HỎI
+     *************************************************************************/
+    const userAnswers = {};
+
+    function initApp() {
+      const closedContainer = document.getElementById("closed-container");
+      const examContainer = document.getElementById("exam-container");
+
+      if (!IS_EXAM_OPEN) {
+        closedContainer.classList.remove("hidden");
+        examContainer.classList.add("hidden");
+        return;
+      }
+
+      closedContainer.classList.add("hidden");
+      examContainer.classList.remove("hidden");
+      renderQuestions();
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function renderQuestions() {
+      const wrapper = document.getElementById("questions-wrapper");
+      let currentPart = "";
+      let html = "";
+
+      QUIZ_DATA.forEach((item) => {
+        if (item.part !== currentPart) {
+          currentPart = item.part;
+          html += `<div class="part-banner">${escapeHtml(currentPart)}</div>`;
+        }
+
+        let optionsHtml = "";
+        for (const [key, val] of Object.entries(item.options)) {
+          optionsHtml += `
+            <label class="option-label" id="label-q${item.id}-${key}">
+              <input type="radio" name="q${item.id}" value="${key}" onchange="handleSelectOption(${item.id}, '${key}')">
+              <span><strong>${key}.</strong> ${escapeHtml(val)}</span>
+            </label>
+          `;
+        }
+
+        html += `
+          <div class="question-card" id="qcard-${item.id}">
+            <div class="question-title">
+              <span class="question-number">Question ${item.id}</span>
+              ${escapeHtml(item.q)}
+            </div>
+            <div class="options-list">
+              ${optionsHtml}
+            </div>
+          </div>
+        `;
+      });
+
+      wrapper.innerHTML = html;
+    }
+
+    function handleSelectOption(questionId, selectedKey) {
+      userAnswers[questionId] = selectedKey;
+
+      // Xóa viền cảnh báo đỏ nếu trước đó câu này bị bỏ trống
+      const qCard = document.getElementById(`qcard-${questionId}`);
+      if (qCard) qCard.classList.remove("unanswered-error");
+
+      // Cập nhật hiệu ứng chọn đáp án
+      const item = QUIZ_DATA.find((q) => q.id === questionId);
+      if (item) {
+        Object.keys(item.options).forEach((key) => {
+          const lbl = document.getElementById(`label-q${questionId}-${key}`);
+          if (lbl) {
+            if (key === selectedKey) lbl.classList.add("selected");
+            else lbl.classList.remove("selected");
+          }
+        });
+      }
+
+      updateProgressBar();
+    }
+
+    function updateProgressBar() {
+      const answeredCount = Object.keys(userAnswers).length;
+      const total = QUIZ_DATA.length;
+      const percent = Math.round((answeredCount / total) * 100);
+
+      document.getElementById("answered-count").textContent = answeredCount;
+      document.getElementById("progress-bar").style.width = `${percent}%`;
+    }
+
+    /*************************************************************************
+     * XỬ LÝ CHẤM ĐIỂM & NỘP BÀI VỀ GOOGLE SHEET
+     *************************************************************************/
+    async function handleSubmitExam() {
+      const className = document.getElementById("className").value.trim();
+      const fullName = document.getElementById("fullName").value.trim();
+      const studentId = document.getElementById("studentId").value.trim();
+
+      // 1. Kiểm tra thông tin sinh viên
+      if (!className || !fullName || !studentId) {
+        alert("Vui lòng nhập đầy đủ Lớp học, Họ và tên, và Mã sinh viên trước khi nộp bài!");
+        if (!className) document.getElementById("className").focus();
+        else if (!fullName) document.getElementById("fullName").focus();
+        else document.getElementById("studentId").focus();
+        return;
+      }
+
+      // 2. Kiểm tra các câu chưa trả lời
+      const unansweredIds = [];
+      QUIZ_DATA.forEach((item) => {
+        const card = document.getElementById(`qcard-${item.id}`);
+        if (!userAnswers[item.id]) {
+          unansweredIds.push(item.id);
+          if (card) card.classList.add("unanswered-error");
+        } else {
+          if (card) card.classList.remove("unanswered-error");
+        }
+      });
+
+      if (unansweredIds.length > 0) {
+        const firstUnanswered = document.getElementById(`qcard-${unansweredIds[0]}`);
+        if (firstUnanswered) {
+          firstUnanswered.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        alert(`Bạn còn ${unansweredIds.length} câu chưa chọn đáp án (Câu: ${unansweredIds.join(", ")}). Vui lòng hoàn thành tất cả 40 câu trước khi nộp bài!`);
+        return;
+      }
+
+      if (!confirm("Bạn có chắc chắn muốn nộp bài không? Sau khi nộp sẽ không thể chỉnh sửa lại.")) {
+        return;
+      }
+
+      // 3. Chấm điểm tự động
+      let correctCount = 0;
+      const detailParts = [];
+
+      QUIZ_DATA.forEach((item) => {
+        const chosen = userAnswers[item.id] || "-";
+        const isRight = chosen === item.answer;
+        if (isRight) correctCount++;
+        detailParts.push(`Q${item.id}:${chosen}`);
+      });
+
+      const score10 = Number(((correctCount / QUIZ_DATA.length) * 10).toFixed(2));
+      const answersDetail = detailParts.join(", ");
+
+      // 4. Gửi dữ liệu về Google Sheet qua POST text/plain;charset=utf-8
+      const submitBtn = document.getElementById("submit-btn");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "ĐANG GỬI BÀI LÀM...";
+
+      const payload = {
+        className: className,
+        fullName: fullName,
+        studentId: studentId,
+        correctCount: correctCount,
+        score10: score10,
+        answersDetail: answersDetail
+      };
+
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        // 5. Hiển thị màn hình Điểm số (Tuyệt đối không hiện đáp án & lời giải)
+        document.getElementById("exam-container").classList.add("hidden");
+        const resultContainer = document.getElementById("result-container");
+        resultContainer.classList.remove("hidden");
+
+        document.getElementById("res-score10").textContent = `${score10} / 10 điểm`;
+        document.getElementById("res-correct").textContent = `Số câu trả lời đúng: ${correctCount} / ${QUIZ_DATA.length}`;
+        document.getElementById("res-student-info").innerHTML = `
+          <div><strong>Họ và tên:</strong> ${escapeHtml(fullName)}</div>
+          <div><strong>Mã sinh viên:</strong> ${escapeHtml(studentId)}</div>
+          <div><strong>Lớp học:</strong> ${escapeHtml(className)}</div>
+        `;
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (error) {
+        console.error("Lỗi khi gửi dữ liệu:", error);
+        alert("Có lỗi kết nối mạng khi gửi bài. Vui lòng kiểm tra kết nối Internet và bấm Nộp Bài lại!");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "NỘP BÀI";
+      }
+    }
+
+    // Khởi chạy khi tải trang
+    window.addEventListener("DOMContentLoaded", initApp);
+  </script>
+</body>
+</html>
